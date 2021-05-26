@@ -7,7 +7,7 @@ defmodule MacroExamples.ModuleStructure do
 
   # ---------------------------------------------------------------------
 
-  # An ordinary macro can be used within the module that defines i.
+  # An ordinary macro can be used within the module that defines it.
   defmodule Works do
 
     defmacrop plus(a, b) do
