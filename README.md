@@ -1,21 +1,10 @@
-# ElixirFunctionDefiningMacros
+# Elixir Function Defining Macros
 
-**TODO: Add description**
+This is code in service of a series of blog posts about macros used to
+define named functions that are attached to modules. That is: macros
+that expand into `def` expressions.
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `elixir_function_defining_macros` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:elixir_function_defining_macros, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/elixir_function_defining_macros](https://hexdocs.pm/elixir_function_defining_macros).
+You can find the first post at
+[here](https://www.crustofcode.com/def-macro-defmacrop/). It contains
+a table of contents.
 

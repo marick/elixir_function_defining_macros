@@ -1,5 +1,13 @@
-defmodule MacroExamples.Defmacrop do
-  
+defmodule MacroExamples.ModuleStructure do
+
+  # Support code for a series of articles on writing macros that expand into
+  # definitions of named functions.
+  #
+  # This one is for https://www.crustofcode.com/def-macro-defmacrop/
+
+  # ---------------------------------------------------------------------
+
+  # An ordinary macro can be used within the module that defines i.
   defmodule Works do
 
     defmacrop plus(a, b) do
@@ -17,7 +25,10 @@ defmodule MacroExamples.Defmacrop do
     end
   end
 
+  # ---------------------------------------------------------------------
 
+  # If you uncomment the code, you'll see that the use of `defadder` doesn't
+  # "see" its definition.
   defmodule NotForFunctions do 
     # defmacrop defadder(addend) do
     #   quote do
@@ -28,13 +39,15 @@ defmodule MacroExamples.Defmacrop do
     # defadder 4
   end
 
-
+  # That's not a property of macros but rather of compiling top-level forms.
   defmodule TopLevel do
     # def add1(n), do: n+1
     # IO.inspect add1(1)
   end
   
+  # ---------------------------------------------------------------------
 
+  # So you must separate the definition of a macro from its uses.
   defmodule Definition do
     defmacro defadder(addend) do
       quote do
