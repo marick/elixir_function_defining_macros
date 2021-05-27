@@ -74,8 +74,9 @@ defmodule MacroExamples.Defchain.Use do
   # in a given map.
 
   @doc ~S"""
-      iex> assert_fields(%{a: 3, b: 4, c: 1}, a: 3, b: 4)
-      %{a: 3, b: 4, c: 1}
+      iex> map = %{a: 3, b: 4, c: 1}
+      iex> map |> assert_fields(a: 3, b: 4) # |> assert...
+      %{a: 3, b: 4, c: 1} 
   """
   defchain assert_fields(map, pairs) do
     for {key, expected} <- pairs do 
