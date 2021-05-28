@@ -4,7 +4,7 @@ defmodule MacroExamples.Defchain do
   # definitions of named functions.
   #
   # This one is for https://www.crustofcode.com/def-macro-arglist/ and
-  # https://www.crustofcode.com/def-macro-arglist/.
+  # https://www.crustofcode.com/def-macro-guards/.
 
   # ---------------------------------------------------------------------
 
@@ -44,7 +44,7 @@ defmodule MacroExamples.Defchain do
     quote do
       def unquote(head) do
         _called_for_side_effect = unquote(body)
-        unquote(value_arg(head))  # <<< this is the difference
+        unquote(first_arg_name(head))  # <<< this is the difference
       end
     end
   end
@@ -52,14 +52,13 @@ defmodule MacroExamples.Defchain do
   # A `when...` clause in a def produces a rather peculiar syntax tree.
   # Although it's textually within the `def`, in the tree structure, it's
   # outside it.
-  defp value_arg(head) do
+  defp first_arg_name(head) do
     case head do
-      {:when, _env, [true_head | _]} ->
-        value_arg(true_head)
+      {:when, _, [true_head | _]} ->
+        first_arg_name(true_head)
       _ -> 
-        {_name, _, args} = head
-        [value_arg | _] = args
-        value_arg
+        {_name, _, [first_arg_name | _]} = head
+        first_arg_name
     end
   end
 end
@@ -121,21 +120,26 @@ defmodule MacroExamples.Defchain.Use do
 
   # ---------------------------------------------------------------------
 
-  # The following tries to use `defchain` with a guard. It turns into
-  # an infinite loop during compilation, so it's commented out.
+  # The following tries to use `defchain` with a guard. It will produce
+  # an `assert_fields3` that contains an infinite recursion. See `inspect.ex`.
+  # The doctest is commented out because it triggers the infinite loop.
 
-  # defchain assert_fields3(map, about_keys) when is_list(about_keys) do
-  #   Enum.each(about_keys, fn
-  #     {key, expected} ->
-  #       assert Map.get(map, key) == expected
-  #     key ->
-  #       assert Map.has_key?(map, key)
-  #   end)
-  # end
+  # @doc ~S"""
+  #     iex> assert_fields3(%{a: 3}, a: 3)  
+  #     %{a: 3}
+  # """
+  defchain assert_fields3(map, about_keys) when is_list(about_keys) do
+    Enum.each(about_keys, fn
+      {key, expected} ->
+        assert Map.get(map, key) == expected
+      key ->
+        assert Map.has_key?(map, key)
+    end)
+  end
 
-  # defchain assert_fields3(map, one_description) do
-  #   assert_fields3(map, [one_description])
-  # end
+  defchain assert_fields3(map, one_description) do
+    assert_fields3(map, [one_description])
+  end
 
   # ---------------------------------------------------------------------
 

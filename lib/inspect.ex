@@ -2,8 +2,8 @@ defmodule MacroExamples.Inspect do
 
   @doc """
   `pe` expands quoted code (a syntax tree) and prints the
-  resulting syntax tree in human-readable form. See the next
-  module for an example of use.
+  resulting syntax tree in human-readable form. See the rest 
+  of this file for an example of use.
   """
   def pe(env, quoted) do
     Macro.expand_once(quoted, env) |> Macro.to_string |> IO.puts
@@ -24,6 +24,5 @@ defmodule MacroExamples.ExpansionViewer do
         end
       end
   end)
-  
 end
 
