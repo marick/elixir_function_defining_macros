@@ -1,0 +1,10 @@
+  defmodule Use do
+    import Definition, only: [getters: 1]
+
+    a = 3
+    
+    getters(optional1: [], optional2: %{a: 1})
+    getters [:list1, list2: (a + 2)]
+    # getter :getter_required
+    # getter getter_optional: 6
+  end
