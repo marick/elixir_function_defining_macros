@@ -38,10 +38,10 @@ defmodule MacroExamples.Getters do
       end
     end
 
-    defmacro getter(name, default) do
+    defmacro getter(name, default_ast) do
       {name_atom, _, _} = name
       quote do
-        def unquote(name), do: Process.get(unquote(name_atom), unquote(default))
+        def unquote(name), do: Process.get(unquote(name_atom), unquote(default_ast))
       end
     end
   end
@@ -77,10 +77,10 @@ defmodule MacroExamples.Getters do
       end
     end
 
-    defmacro getter([{name_atom, default}]) do
+    defmacro getter([{name_atom, default_ast}]) do
       name = {name_atom, [], nil}
       quote do
-        def unquote(name), do: Process.get(unquote(name_atom), unquote(default))
+        def unquote(name), do: Process.get(unquote(name_atom), unquote(default_ast))
       end
     end
   end
@@ -98,13 +98,13 @@ defmodule MacroExamples.Getters do
     @doc ~S"""
         iex> alias MacroExamples.Getters.UseByAtom
         iex> UseByAtom.optional_key
-        []
+        %{a: 3}
         iex> Process.put(:optional_key, 3)
         iex> UseByAtom.optional_key
         3
         
     """
-    getter optional_key: []
+    getter optional_key: %{a: 3}
   end
 
   # ---------------------------------------------------------------------
@@ -116,10 +116,10 @@ defmodule MacroExamples.Getters do
       end
     end
 
-    defmacro getter([{name_atom, default}]) do
+    defmacro getter([{name_atom, default_ast}]) do
       quote do
         def unquote(name_atom)(),
-          do: Process.get(unquote(name_atom), unquote(default))
+          do: Process.get(unquote(name_atom), unquote(default_ast))
       end
     end
   end

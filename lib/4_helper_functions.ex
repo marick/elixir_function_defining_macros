@@ -73,10 +73,10 @@ defmodule MacroExamples.HelperFunctions do
   #     result
   #   end
 
-  #   defp make_def(name_atom, default) do
+  #   defp make_def(name_atom, default_ast) do
   #     quote do
   #       def unquote(name_atom)() do
-  #         checking_get(unquote(name_atom), unquote(default))
+  #         checking_get(unquote(name_atom), unquote(default_ast))
   #       end
   #     end
   #   end
@@ -84,8 +84,8 @@ defmodule MacroExamples.HelperFunctions do
   #   defmacro getter(name_atom) when is_atom(name_atom),
   #     do: make_def(name_atom, @unexpected_value)
 
-  #   defmacro getter([{name_atom, default}]),
-  #     do: make_def(name_atom, default)
+  #   defmacro getter([{name_atom, default_ast}]),
+  #     do: make_def(name_atom, default_ast)
   end
 
   defmodule BrokenUse do
@@ -123,10 +123,10 @@ defmodule MacroExamples.HelperFunctions do
       result
     end
 
-    defp make_def(name_atom, default) do
+    defp make_def(name_atom, default_ast) do
       quote do
         def unquote(name_atom)() do
-          unquote(__MODULE__).checking_get(unquote(name_atom), unquote(default))
+          unquote(__MODULE__).checking_get(unquote(name_atom), unquote(default_ast))
         end
       end
     end
@@ -134,8 +134,8 @@ defmodule MacroExamples.HelperFunctions do
     defmacro getter(name_atom) when is_atom(name_atom),
       do: make_def(name_atom, @unexpected_value)
 
-    defmacro getter([{name_atom, default}]),
-      do: make_def(name_atom, default)
+    defmacro getter([{name_atom, default_ast}]),
+      do: make_def(name_atom, default_ast)
   end
 
   defmodule WorkingUse do
@@ -152,12 +152,12 @@ defmodule MacroExamples.HelperFunctions do
     @doc ~S"""
         iex> alias MacroExamples.HelperFunctions.WorkingUse
         iex> WorkingUse.optional_key()
-        []
+        %{a: 1}
         iex> Process.put(:optional_key, 3)
         iex> WorkingUse.optional_key()
         3
         
     """
-    getter optional_key: []
+    getter optional_key: %{a: 1}
   end
 end
