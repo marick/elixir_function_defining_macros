@@ -29,6 +29,21 @@ defmodule MacroExamples.Getters do
   end
 
   # ---------------------------------------------------------------------
+  defmodule Inspect do 
+    defmacro name_and_atom(name, atom) do
+      IO.puts "\n====== From 3_getter.ex, this shows quoted text for names and atoms"
+      IO.inspect name, label: "name"
+      IO.inspect atom, label: "atom"
+    end
+  end
+
+  defmodule InspectTrigger do
+    require Inspect
+    Inspect.name_and_atom(some_name, :some_atom)
+  end
+  
+
+  # ---------------------------------------------------------------------
 
   defmodule ByName do
     defmacro getter(name) do
@@ -59,12 +74,12 @@ defmodule MacroExamples.Getters do
     @doc ~S"""
         iex> alias MacroExamples.Getters.UseByName
         iex> UseByName.optional_key
-        []
+        %{a: 3}
         iex> Process.put(:optional_key, 3)
         iex> UseByName.optional_key
         3
     """
-    getter optional_key, []
+    getter optional_key, %{a: 3} # :rand.uniform(4) + 5
   end
 
   # ---------------------------------------------------------------------
@@ -87,6 +102,7 @@ defmodule MacroExamples.Getters do
   
   defmodule UseByAtom do
     import ByAtom
+
     @doc ~S"""
         iex> alias MacroExamples.Getters.UseByAtom
         iex> Process.put(:required_key, 3)
@@ -137,12 +153,12 @@ defmodule MacroExamples.Getters do
     @doc ~S"""
         iex> alias MacroExamples.Getters.UseByAtomBetter
         iex> UseByAtomBetter.optional_key
-        []
+        %{a: 4}
         iex> Process.put(:optional_key, 3)
         iex> UseByAtomBetter.optional_key
         3
         
     """
-    getter optional_key: []
+    getter optional_key: %{a: 4}
   end
 end  
